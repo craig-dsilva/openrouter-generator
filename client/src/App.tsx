@@ -7,6 +7,7 @@ import "./App.css";
 const App = () => {
   const [models, setModels] = useState<any>();
   const [selectedModel, setSelectedModel] = useState("");
+  const [prompt, setPrompt] = useState("");
 
   const fetchModels = async () => {
     try {
@@ -15,6 +16,23 @@ const App = () => {
       );
       const data = await res.json();
       setModels(data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const submitPrompt = async () => {
+    try {
+      const res = await fetch("http://localhost:8000", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ selectedModel, prompt }),
+      });
+      const data = await res.json();
+      console.log(data);
+      setPrompt("");
     } catch (error) {
       console.error(error);
     }
