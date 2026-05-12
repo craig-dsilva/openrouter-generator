@@ -1,7 +1,7 @@
 import Layout from "./components/Layout/Layout";
 import "./App.css";
 
-function App() {
+const App = () => {
   return (
     <>
       <Layout>
@@ -16,6 +16,6 @@ function App() {
       </Layout>
     </>
   );
-}
+};
 
 export default App;
