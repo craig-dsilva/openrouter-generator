@@ -7,7 +7,9 @@ import "./App.css";
 const App = () => {
   const [models, setModels] = useState<any>();
   const [model, setModel] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(
+    "Generate a beautiful sunset over mountains",
+  );
 
   const fetchModels = async () => {
     try {
