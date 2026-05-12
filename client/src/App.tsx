@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import Layout from "./components/Layout/Layout";
+import ModelSelector from "./components/ModelSelector/ModelSelector";
+import Prompt from "./components/Prompt/Prompt";
 import "./App.css";
 
 const App = () => {
   const [models, setModels] = useState<any>();
+  const [selectedModel, setSelectedModel] = useState("");
 
   const fetchModels = async () => {
     try {
@@ -24,21 +27,12 @@ const App = () => {
   return (
     <>
       <Layout>
-        <select name="model-selector" id="model-selector">
-          <option value="default">Select a model...</option>
-          {models &&
-            models.map((model: any) => {
-              return <option id={model.id}>{model.name}</option>;
-            })}
-        </select>
-        <div className="main-prompt-container">
-          <textarea
-            className="main-prompt-textbox"
-            name="prompt"
-            id="prompt"
-          ></textarea>
-          <button>Send</button>
-        </div>
+        <ModelSelector
+          models={models}
+          selectedModel={selectedModel}
+          updateModel={setSelectedModel}
+        />
+        <Prompt />
       </Layout>
     </>
   );
