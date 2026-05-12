@@ -1,0 +1,9 @@
+.main-prompt-container {
+  display: flex;
+  max-width: fit-content;
+  margin: 25% auto;
+}
+
+.main-prompt-textbox {
+  margin-right: 1.5em;
+}

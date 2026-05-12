@@ -1,10 +1,12 @@
+import "./footer.css";
+
 const Footer = () => {
   return (
-    <div>
+    <footer className="footer">
       <p>
         <strong>Disclaimer: </strong> LLMs can make mistakes.
       </p>
-    </div>
+    </footer>
   );
 };
 

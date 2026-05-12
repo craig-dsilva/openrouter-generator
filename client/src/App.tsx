@@ -5,8 +5,14 @@ function App() {
   return (
     <>
       <Layout>
-        <textarea name="prompt" id="prompt"></textarea>
-        <button>Send</button>
+        <div className="main-prompt-container">
+          <textarea
+            className="main-prompt-textbox"
+            name="prompt"
+            id="prompt"
+          ></textarea>
+          <button>Send</button>
+        </div>
       </Layout>
     </>
   );

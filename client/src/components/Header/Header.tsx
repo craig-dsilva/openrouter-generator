@@ -1,7 +1,10 @@
+import "./header.css";
+
 const Header = () => {
   return (
-    <header>
-      <h1>OpenRouter Generator</h1>
+    <header className="header">
+      <h1 className="header-heading-main">OpenRouter Generator</h1>
+      <button>Dark Mode</button>
     </header>
   );
 };
