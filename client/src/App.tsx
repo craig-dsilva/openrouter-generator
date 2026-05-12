@@ -6,8 +6,8 @@ import "./App.css";
 
 const App = () => {
   const [models, setModels] = useState<any>();
-  const [selectedModel, setSelectedModel] = useState("");
-  const [prompt, setPrompt] = useState("");
+  const [model, setModel] = useState("");
+  const [message, setMessage] = useState("");
 
   const fetchModels = async () => {
     try {
@@ -23,16 +23,18 @@ const App = () => {
 
   const submitPrompt = async () => {
     try {
-      const res = await fetch("http://localhost:8000", {
+      if (!model) throw new Error("Please select a model");
+      if (!message) throw new Error("Empty prompt");
+      const res = await fetch("http://localhost:8000/image", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ selectedModel, prompt }),
+        body: JSON.stringify({ model, message }),
       });
       const data = await res.json();
       console.log(data);
-      setPrompt("");
+      setMessage("");
     } catch (error) {
       console.error(error);
     }
@@ -47,10 +49,14 @@ const App = () => {
       <Layout>
         <ModelSelector
           models={models}
-          selectedModel={selectedModel}
-          updateModel={setSelectedModel}
+          selectedModel={model}
+          handleModel={setModel}
         />
-        <Prompt />
+        <Prompt
+          message={message}
+          handlePrompt={setMessage}
+          submitPrompt={submitPrompt}
+        />
       </Layout>
     </>
   );

@@ -1,20 +1,20 @@
 interface ModelSelectorProps {
   models: string;
   selectedModel: string;
-  updateModel: (value: string) => void;
+  handleModel: (value: string) => void;
 }
 
 const ModelSelector = ({
   models,
   selectedModel,
-  updateModel,
+  handleModel,
 }: ModelSelectorProps) => {
   return (
     <select
       name="model-selector"
       id="model-selector"
       value={selectedModel}
-      onChange={(e) => updateModel(e.target.value)}
+      onChange={(e) => handleModel(e.target.value)}
     >
       <option key="">Select a model . . .</option>
       {models &&
