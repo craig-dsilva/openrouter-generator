@@ -1,17 +1,40 @@
 import requests
 import base64
+import datetime
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+from typing import Annotated
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 load_dotenv()
 
 API_KEY_REF = os.getenv("API_KEY_REF")
 
-@app.get("/image", status_code=200)
-async def image():
+NonEmptyStr = Annotated[str, Field(min_length=1)]
+
+class Prompt(BaseModel):
+    model: NonEmptyStr
+    message: NonEmptyStr
+    
+
+@app.post("/image", status_code=200)
+async def image(prompt: Prompt):
     url = "https://openrouter.ai/api/v1/chat/completions"
 
     headers = {
@@ -20,11 +43,11 @@ async def image():
     }
     
     payload = {
-        "model": "sourceful/riverflow-v2-fast",
+        "model": prompt.model,
         "messages": [
             {
                 "role": "user",
-                "content": "Generate a beautiful sunset over mountains"
+                "content": prompt.message
             }
         ],
         "modalities": ["image"]
@@ -40,7 +63,7 @@ async def image():
             for image in message["images"]:
                 image_url = image["image_url"]["url"]
                 base64_string = image_url.split(",", 1)[-1] # Strips the URL and returns a base64_string
-                with open("./images/output.png", "wb") as f:
+                with open(f"./images/{datetime.datetime.now()}.png", "wb") as f:
                     f.write(base64.b64decode(base64_string)) # Creates a file from base64 string
 
     # Send the response from OpenRouter to the client

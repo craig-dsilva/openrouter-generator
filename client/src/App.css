@@ -1,15 +1,1 @@
-.main-prompt-container {
-  display: flex;
-  max-width: fit-content;
-  margin: 25% auto;
-}
 
-.main-prompt-textbox {
-  margin-right: 1.5em;
-}
-
-@media screen and (min-width: 600px) {
-  .main-prompt-container {
-    margin-top: 10%;
-  }
-}
