@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Layout from "./components/Layout/Layout";
 import ModelSelector from "./components/ModelSelector/ModelSelector";
 import Prompt from "./components/Prompt/Prompt";
 import "./App.css";
 
 const App = () => {
-  const [models, setModels] = useState<any>();
+  const [models, setModels] = useState<[]>();
   const [model, setModel] = useState("");
   const [message, setMessage] = useState(
     "Generate a beautiful sunset over mountains",
@@ -42,9 +42,7 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    fetchModels();
-  }, []);
+  fetchModels();
 
   return (
     <>

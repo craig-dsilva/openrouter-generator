@@ -1,5 +1,5 @@
 interface ModelSelectorProps {
-  models: string;
+  models: [] | undefined;
   selectedModel: string;
   handleModel: (value: string) => void;
 }
@@ -18,7 +18,7 @@ const ModelSelector = ({
     >
       <option key="">Select a model . . .</option>
       {models &&
-        models.map((model: any) => {
+        models.map((model: {id: number; name: string;}) => {
           return (
             <option key={model.id} value={model.id}>
               {model.name}
