@@ -1,3 +1,5 @@
+import "./ModelSelector.css";
+
 interface ModelSelectorProps {
   models: [] | undefined;
   selectedModel: string;
@@ -11,6 +13,7 @@ const ModelSelector = ({
 }: ModelSelectorProps) => {
   return (
     <select
+      className="model-selector"
       name="model-selector"
       id="model-selector"
       value={selectedModel}
@@ -18,7 +21,7 @@ const ModelSelector = ({
     >
       <option key="">Select a model . . .</option>
       {models &&
-        models.map((model: {id: number; name: string;}) => {
+        models.map((model: { id: number; name: string }) => {
           return (
             <option key={model.id} value={model.id}>
               {model.name}

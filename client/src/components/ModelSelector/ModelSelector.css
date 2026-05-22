@@ -1,0 +1,9 @@
+.model-selector {
+  width: 80%;
+}
+
+@media screen and (min-width: 800px) {
+  .model-selector {
+    width: auto;
+  }
+}
