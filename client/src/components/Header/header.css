@@ -1,8 +1,13 @@
 .header {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 2em;
 }
 
 .header-heading-main {
   font-size: 1.2em;
+}
+
+.header-button {
+  visibility: hidden;
 }
