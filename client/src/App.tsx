@@ -10,6 +10,7 @@ const App = () => {
   const [message, setMessage] = useState(
     "Generate a beautiful sunset over mountains",
   );
+  const [imageFile, setImageFile] = useState("./blur.jpg");
 
   const fetchModels = async () => {
     try {
@@ -35,6 +36,8 @@ const App = () => {
         body: JSON.stringify({ model, message }),
       });
       const data = await res.json();
+      const imageName = [".", ...data.file_name.split("/").splice(3)].join("/");
+      setImageFile(imageName);
       console.log(data);
       setMessage("");
     } catch (error) {
@@ -56,6 +59,13 @@ const App = () => {
           message={message}
           handlePrompt={setMessage}
           submitPrompt={submitPrompt}
+        />
+        <img
+          className="generated-image"
+          src={imageFile}
+          alt="Image generated will show here"
+          width="256vw"
+          height="256vh"
         />
       </Layout>
     </>
