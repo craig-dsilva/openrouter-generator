@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "./components/Layout/Layout";
 import ModelSelector from "./components/ModelSelector/ModelSelector";
 import Prompt from "./components/Prompt/Prompt";
@@ -45,7 +45,9 @@ const App = () => {
     }
   };
 
-  fetchModels();
+  useEffect(() => {
+    fetchModels();
+  }, []);
 
   return (
     <>
