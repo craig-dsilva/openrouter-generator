@@ -16,7 +16,7 @@ const Prompt = ({ message, handlePrompt, submitPrompt }: PromptProps) => {
         value={message}
         onChange={(e) => handlePrompt(e.target.value)}
       ></textarea>
-      <button onClick={submitPrompt}>Send</button>
+      <button className="main-prompt-button" onClick={submitPrompt}>Send</button>
     </div>
   );
 };
