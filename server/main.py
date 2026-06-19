@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from typing import Annotated
 from pathlib import Path
@@ -27,6 +28,8 @@ load_dotenv()
 
 API_KEY_REF = os.getenv("API_KEY_REF")
 
+app.mount("/images", StaticFiles(directory="images"), name="images")
+
 NonEmptyStr = Annotated[str, Field(min_length=1)]
 
 class Prompt(BaseModel):
@@ -36,7 +39,7 @@ class Prompt(BaseModel):
 
 @app.post("/image", status_code=200)
 async def image(prompt: Prompt):
-    file_name = f"../client/public/images/{datetime.datetime.now()}.png"
+    file_name = f"./images/{datetime.datetime.now()}.png"
     url = "https://openrouter.ai/api/v1/chat/completions"
 
     headers = {
@@ -71,4 +74,3 @@ async def image(prompt: Prompt):
 
     # Send the response from OpenRouter to the client
     return {"result": result, "file_name": file_name}
-

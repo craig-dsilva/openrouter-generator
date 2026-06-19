@@ -34,9 +34,8 @@ const App = () => {
         body: JSON.stringify({ model, message }),
       });
       const data = await res.json();
-      const imageName = [".", ...data.file_name.split("/").splice(3)].join("/");
+      const imageName = data.file_name.replace("./", "http://localhost:8000/");
       setImageFile(imageName);
-      console.log(data);
       setMessage("");
     } catch (error) {
       console.error(error);
