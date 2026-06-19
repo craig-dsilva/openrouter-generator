@@ -28,6 +28,7 @@ load_dotenv()
 
 API_KEY_REF = os.getenv("API_KEY_REF")
 
+# Mounts image directory as route
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
 NonEmptyStr = Annotated[str, Field(min_length=1)]

@@ -10,6 +10,7 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState("./blur.jpg");
 
+  // Populates the model dropdown
   const fetchModels = async () => {
     try {
       const res = await fetch(
