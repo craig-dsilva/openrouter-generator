@@ -3,9 +3,3 @@
   display: block;
   margin: auto;
 }
-
-@media screen and (min-width: 800px) {
-  .model-selector {
-    width: auto;
-  }
-}
