@@ -14,9 +14,10 @@ const Prompt = ({ message, handlePrompt, submitPrompt }: PromptProps) => {
         name="prompt"
         id="prompt"
         value={message}
+        placeholder="Describe the image you want..."
         onChange={(e) => handlePrompt(e.target.value)}
       ></textarea>
-      <button onClick={submitPrompt}>Send</button>
+      <button className="main-prompt-button" onClick={submitPrompt}>Send</button>
     </div>
   );
 };

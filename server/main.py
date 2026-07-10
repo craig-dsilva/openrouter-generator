@@ -5,8 +5,10 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from typing import Annotated
+from pathlib import Path
 
 app = FastAPI()
 
@@ -26,6 +28,9 @@ load_dotenv()
 
 API_KEY_REF = os.getenv("API_KEY_REF")
 
+# Mounts image directory as route
+app.mount("/images", StaticFiles(directory="images"), name="images")
+
 NonEmptyStr = Annotated[str, Field(min_length=1)]
 
 class Prompt(BaseModel):
@@ -35,6 +40,7 @@ class Prompt(BaseModel):
 
 @app.post("/image", status_code=200)
 async def image(prompt: Prompt):
+    file_name = f"./images/{datetime.datetime.now()}.png"
     url = "https://openrouter.ai/api/v1/chat/completions"
 
     headers = {
@@ -63,8 +69,9 @@ async def image(prompt: Prompt):
             for image in message["images"]:
                 image_url = image["image_url"]["url"]
                 base64_string = image_url.split(",", 1)[-1] # Strips the URL and returns a base64_string
-                with open(f"./images/{datetime.datetime.now()}.png", "wb") as f:
+                Path(file_name).parent.mkdir(parents=True, exist_ok=True)
+                with open(file_name, "wb") as f:
                     f.write(base64.b64decode(base64_string)) # Creates a file from base64 string
 
     # Send the response from OpenRouter to the client
-    return result
+    return {"result": result, "file_name": file_name}

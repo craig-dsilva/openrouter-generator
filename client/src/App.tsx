@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "./components/Layout/Layout";
 import ModelSelector from "./components/ModelSelector/ModelSelector";
 import Prompt from "./components/Prompt/Prompt";
@@ -7,10 +7,10 @@ import "./App.css";
 const App = () => {
   const [models, setModels] = useState<[]>();
   const [model, setModel] = useState("");
-  const [message, setMessage] = useState(
-    "Generate a beautiful sunset over mountains",
-  );
+  const [message, setMessage] = useState("");
+  const [imageFile, setImageFile] = useState("./blur.jpg");
 
+  // Populates the model dropdown
   const fetchModels = async () => {
     try {
       const res = await fetch(
@@ -35,14 +35,17 @@ const App = () => {
         body: JSON.stringify({ model, message }),
       });
       const data = await res.json();
-      console.log(data);
+      const imageName = data.file_name.replace("./", "http://localhost:8000/");
+      setImageFile(imageName);
       setMessage("");
     } catch (error) {
       console.error(error);
     }
   };
 
-  fetchModels();
+  useEffect(() => {
+    fetchModels();
+  }, []);
 
   return (
     <>
@@ -56,6 +59,13 @@ const App = () => {
           message={message}
           handlePrompt={setMessage}
           submitPrompt={submitPrompt}
+        />
+        <img
+          className="generated-image"
+          src={imageFile}
+          alt="Image generated will show here"
+          width="256vw"
+          height="256vh"
         />
       </Layout>
     </>
