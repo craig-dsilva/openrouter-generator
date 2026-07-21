@@ -1,5 +1,10 @@
-.model-selector {
+.model-selector,
+.api-key-container {
   width: 80%;
   display: block;
   margin: auto;
+}
+
+.api-key {
+  margin: 1vh;
 }
