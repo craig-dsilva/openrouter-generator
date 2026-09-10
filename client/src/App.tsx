@@ -11,6 +11,7 @@ const App = () => {
   const [apiKey, setApiKey] = useState("");
   const [keyAlert, setKeyAlert] = useState(false);
   const [imageFile, setImageFile] = useState("./blur.jpg");
+  const [error, setError] = useState("");
 
   // Populates the model dropdown
   const fetchModels = async () => {
@@ -45,6 +46,8 @@ const App = () => {
       setMessage("");
     } catch (error) {
       console.error(error);
+      setError(error.message);
+      setTimeout(() => setError(""), 3000);
     }
   };
 
@@ -64,6 +67,7 @@ const App = () => {
   return (
     <>
       <Layout>
+        <p className="error">{error}</p>
         <ModelSelector
           models={models}
           selectedModel={model}
