@@ -1,9 +1,7 @@
 import requests
 import base64
 import datetime
-import os
-from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -24,9 +22,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-load_dotenv()
-
-API_KEY_REF = os.getenv("API_KEY_REF")
+async def get_user_api_key(x_user_api_key: str = Header(...)):
+    if not x_user_api_key:
+        raise HTTPException(status_code=401, detail="API key required")
+    return x_user_api_key
 
 # Mounts image directory as route
 app.mount("/images", StaticFiles(directory="images"), name="images")
@@ -39,7 +38,7 @@ class Prompt(BaseModel):
     
 
 @app.post("/image", status_code=200)
-async def image(prompt: Prompt):
+async def image(prompt: Prompt, API_KEY_REF: str = Depends(get_user_api_key)):
     file_name = f"./images/{datetime.datetime.now()}.png"
     url = "https://openrouter.ai/api/v1/chat/completions"
 

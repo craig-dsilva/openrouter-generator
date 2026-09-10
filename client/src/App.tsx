@@ -8,7 +8,10 @@ const App = () => {
   const [models, setModels] = useState<[]>();
   const [model, setModel] = useState("");
   const [message, setMessage] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const [keyAlert, setKeyAlert] = useState(false);
   const [imageFile, setImageFile] = useState("./blur.jpg");
+  const [error, setError] = useState("");
 
   // Populates the model dropdown
   const fetchModels = async () => {
@@ -25,12 +28,15 @@ const App = () => {
 
   const submitPrompt = async () => {
     try {
+      const userApiKey = sessionStorage.getItem("userApiKey");
+      if (!userApiKey) throw new Error("Please enter your API key");
       if (!model) throw new Error("Please select a model");
       if (!message) throw new Error("Empty prompt");
       const res = await fetch("http://localhost:8000/image", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-User-Api-Key": userApiKey,
         },
         body: JSON.stringify({ model, message }),
       });
@@ -40,7 +46,18 @@ const App = () => {
       setMessage("");
     } catch (error) {
       console.error(error);
+      setError(error.message);
+      setTimeout(() => setError(""), 3000);
     }
+  };
+
+  const submitKey = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!apiKey) throw new Error("Please enter API key");
+    sessionStorage.setItem("userApiKey", apiKey);
+    setApiKey("");
+    setKeyAlert(true);
+    setTimeout(() => setKeyAlert(false), 3000);
   };
 
   useEffect(() => {
@@ -50,10 +67,15 @@ const App = () => {
   return (
     <>
       <Layout>
+        <p className="error">{error}</p>
         <ModelSelector
           models={models}
           selectedModel={model}
           handleModel={setModel}
+          apiKey={apiKey}
+          handleKey={setApiKey}
+          submitKey={submitKey}
+          keyAlert={keyAlert}
         />
         <Prompt
           message={message}
