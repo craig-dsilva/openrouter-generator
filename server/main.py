@@ -35,6 +35,7 @@ async def get_user_api_key(x_user_api_key: str = Header(...)):
 app.mount("/assets", StaticFiles(directory=os.path.join(static_dir, "assets")), name="assets")
 
 # Mounts image directory as route
+os.makedirs("images", exist_ok=True)
 app.mount("/images", StaticFiles(directory="images"), name="images")
 app.mount("/", StaticFiles(directory="../client/dist", html=True), name="client")
 
@@ -85,3 +86,4 @@ async def image(prompt: Prompt, API_KEY_REF: str = Depends(get_user_api_key)):
 
     # Send the response from OpenRouter to the client
     return {"result": result, "file_name": file_name}
+
