@@ -46,7 +46,7 @@ const App = () => {
       setMessage("");
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError(error instanceof Error ? error.message : "An error occurred");
       setTimeout(() => setError(""), 3000);
     }
   };
